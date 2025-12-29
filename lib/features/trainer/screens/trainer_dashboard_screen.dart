@@ -52,6 +52,13 @@ class TrainerDashboardScreen extends ConsumerWidget {
                     onTap: () => Navigator.of(context).pushNamed(AppRoutes.dietPlans),
                   ),
                   const SizedBox(height: 12),
+                  _ActionCard(
+                    icon: Icons.fitness_center,
+                    title: 'Workouts',
+                    subtitle: 'Create and manage workouts for trainees',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.workouts),
+                  ),
+                  const SizedBox(height: 12),
                   Card(
                     child: ListTile(
                       leading: const Icon(Icons.people_outline),

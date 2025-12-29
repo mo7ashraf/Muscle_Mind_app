@@ -1,7 +1,7 @@
 class AppRoutes {
   AppRoutes._();
 
-  static const String splash = '/';
+  static const String splash = '/splash';
   static const String login = '/login';
   static const String register = '/register';
 
@@ -19,4 +19,11 @@ class AppRoutes {
   static const String dietPlanDetails = '/diet-plans/details';
   static const String createDietPlan = '/diet-plans/create';
   static const String addMeal = '/diet-plans/add-meal';
+
+  // Workouts
+  static const String workouts = '/workouts';
+  static const String workoutDetails = '/workouts/details';
+  static const String createWorkout = '/workouts/create';
+  static const String addExercise = '/workouts/add-exercise';
+
 }

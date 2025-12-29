@@ -6,7 +6,7 @@ import 'core/constants/app_routes.dart';
 import 'features/auth/providers/auth_controller.dart';
 import 'features/auth/screens/login_screen.dart';
 import 'features/auth/screens/register_screen.dart';
-import 'features/common/screens/profile_screen.dart';
+import 'features/profile/profile_screen.dart';
 import 'features/splash/splash_screen.dart';
 import 'features/trainee/screens/trainee_dashboard_screen.dart';
 import 'features/trainer/screens/trainer_dashboard_screen.dart';
@@ -19,6 +19,10 @@ import 'features/diet/screens/add_meal_screen.dart';
 import 'features/diet/screens/create_diet_plan_screen.dart';
 import 'features/diet/screens/diet_plan_details_screen.dart';
 import 'features/diet/screens/diet_plans_screen.dart';
+import 'features/workouts/screens/add_exercise_screen.dart';
+import 'features/workouts/screens/create_workout_screen.dart';
+import 'features/workouts/screens/workout_details_screen.dart';
+import 'features/workouts/screens/workouts_screen.dart';
 
 void main() {
   runApp(const ProviderScope(child: MuscleMindApp()));
@@ -48,6 +52,7 @@ class MuscleMindApp extends ConsumerWidget {
         Locale('ar'),
       ],
       routes: {
+        AppRoutes.splash: (_) => const SplashScreen(),
         AppRoutes.login: (_) => const LoginScreen(),
         AppRoutes.register: (_) => const RegisterScreen(),
         AppRoutes.trainerHome: (_) => const TrainerDashboardScreen(),
@@ -60,6 +65,10 @@ class MuscleMindApp extends ConsumerWidget {
         AppRoutes.addMeasurement: (_) => const AddMeasurementScreen(),
         AppRoutes.dietPlans: (_) => const DietPlansScreen(),
         AppRoutes.createDietPlan: (_) => const CreateDietPlanScreen(),
+
+        // Workouts
+        AppRoutes.workouts: (_) => const WorkoutsScreen(),
+        AppRoutes.createWorkout: (_) => const CreateWorkoutScreen(),
       },
       onGenerateRoute: (settings) {
         if (settings.name == AppRoutes.dietPlanDetails) {
@@ -74,6 +83,19 @@ class MuscleMindApp extends ConsumerWidget {
             return MaterialPageRoute(builder: (_) => AddMealScreen(dietPlanId: id));
           }
         }
+        if (settings.name == AppRoutes.workoutDetails) {
+          final id = settings.arguments;
+          if (id is int) {
+            return MaterialPageRoute(builder: (_) => WorkoutDetailsScreen(workoutId: id));
+          }
+        }
+        if (settings.name == AppRoutes.addExercise) {
+          final id = settings.arguments;
+          if (id is int) {
+            return MaterialPageRoute(builder: (_) => AddExerciseScreen(workoutId: id));
+          }
+        }
+
         return null;
       },
       home: auth.isLoading

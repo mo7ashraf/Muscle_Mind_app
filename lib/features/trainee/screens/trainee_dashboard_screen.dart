@@ -59,11 +59,18 @@ class TraineeDashboardScreen extends ConsumerWidget {
                     onTap: () => Navigator.of(context).pushNamed(AppRoutes.dietPlans),
                   ),
                   const SizedBox(height: 12),
+                  _ActionCard(
+                    icon: Icons.fitness_center,
+                    title: 'Workouts',
+                    subtitle: 'View and complete your workouts',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.workouts),
+                  ),
+                  const SizedBox(height: 12),
                   Card(
                     child: ListTile(
                       leading: const Icon(Icons.info_outline),
                       title: const Text('Coming next'),
-                      subtitle: const Text('Workouts, challenges, and notifications'),
+                      subtitle: const Text('Challenges, articles, and notifications'),
                     ),
                   ),
                 ],
