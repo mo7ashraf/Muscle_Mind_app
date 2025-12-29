@@ -16,26 +16,34 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   bool _navigated = false;
 
   @override
-  Widget build(BuildContext context) {
-    ref.listen<AuthState>(authControllerProvider, (prev, next) {
-      if (_navigated) return;
-      if (next.isLoading) return;
+  void initState() {
+    super.initState();
 
-      _navigated = true;
+    // Listen once and navigate when auth state is ready
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.listen<AuthState>(authControllerProvider, (prev, next) {
+        if (_navigated) return;
+        if (next.isLoading) return;
 
-      if (!next.isAuthed) {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.login);
-        return;
-      }
+        _navigated = true;
 
-      final role = next.user!.role;
-      if (role == 'trainer') {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.trainerHome);
-      } else {
-        Navigator.of(context).pushReplacementNamed(AppRoutes.traineeHome);
-      }
+        if (!next.isAuthed) {
+          Navigator.of(context).pushReplacementNamed(AppRoutes.login);
+          return;
+        }
+
+        final role = next.user!.role;
+        if (role == 'trainer') {
+          Navigator.of(context).pushReplacementNamed(AppRoutes.trainerHome);
+        } else {
+          Navigator.of(context).pushReplacementNamed(AppRoutes.traineeHome);
+        }
+      });
     });
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final state = ref.watch(authControllerProvider);
 
     return Scaffold(

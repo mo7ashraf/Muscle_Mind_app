@@ -2,15 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/constants/app_routes.dart';
-import '../../../core/services/api_service.dart';
 import '../../auth/providers/auth_controller.dart';
-
-final traineeProgressProvider = FutureProvider.autoDispose<int>((ref) async {
-  final res = await ApiService.dio.get('/trainee/progress');
-  final data = res.data as Map<String, dynamic>;
-  final list = (data['data'] as List<dynamic>? ?? <dynamic>[]);
-  return list.length;
-});
 
 class TraineeDashboardScreen extends ConsumerWidget {
   const TraineeDashboardScreen({super.key});
@@ -18,7 +10,6 @@ class TraineeDashboardScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authControllerProvider);
-    final progressAsync = ref.watch(traineeProgressProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -47,34 +38,61 @@ class TraineeDashboardScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Hi, ${auth.user?.name ?? ''}',
+              'Hello, ${auth.user?.name ?? ''}',
               style: Theme.of(context).textTheme.titleLarge,
             ),
             const SizedBox(height: 12),
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    const Icon(Icons.show_chart),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: progressAsync.when(
-                        data: (count) => Text('Progress entries: $count'),
-                        loading: () => const Text('Loading progress...'),
-                        error: (e, _) => Text(ApiService.messageFromError(e)),
-                      ),
+            Expanded(
+              child: ListView(
+                children: [
+                  _ActionCard(
+                    icon: Icons.photo_camera_front,
+                    title: 'My Progress',
+                    subtitle: 'Photos, weight, and measurements',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.progress),
+                  ),
+                  const SizedBox(height: 12),
+                  _ActionCard(
+                    icon: Icons.restaurant,
+                    title: 'Diet Plans',
+                    subtitle: 'View your meal plan and calories',
+                    onTap: () => Navigator.of(context).pushNamed(AppRoutes.dietPlans),
+                  ),
+                  const SizedBox(height: 12),
+                  Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.info_outline),
+                      title: const Text('Coming next'),
+                      subtitle: const Text('Workouts, challenges, and notifications'),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ),
-            const SizedBox(height: 12),
-            const Text(
-              'Next: build Progress, Diet, Workouts screens (Phase 2).',
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _ActionCard extends StatelessWidget {
+  const _ActionCard({required this.icon, required this.title, required this.subtitle, required this.onTap});
+
+  final IconData icon;
+  final String title;
+  final String subtitle;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: ListTile(
+        onTap: onTap,
+        leading: CircleAvatar(child: Icon(icon)),
+        title: Text(title),
+        subtitle: Text(subtitle),
+        trailing: const Icon(Icons.chevron_right),
       ),
     );
   }

@@ -36,10 +36,9 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       _inited = true;
     }
 
-    final imageUrl =
-        (user?.profileImage != null && user!.profileImage!.isNotEmpty)
-            ? '${AppConstants.storageBaseUrl}/${user.profileImage}'
-            : null;
+    final imageUrl = (user?.profileImage != null && user!.profileImage!.isNotEmpty)
+        ? '${AppConstants.storageBaseUrl}/${user.profileImage}'
+        : null;
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profile')),
@@ -54,19 +53,15 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                     children: [
                       CircleAvatar(
                         radius: 32,
-                        backgroundImage:
-                            imageUrl != null ? NetworkImage(imageUrl) : null,
-                        child: imageUrl == null
-                            ? const Icon(Icons.person, size: 32)
-                            : null,
+                        backgroundImage: imageUrl != null ? NetworkImage(imageUrl) : null,
+                        child: imageUrl == null ? const Icon(Icons.person, size: 32) : null,
                       ),
                       const SizedBox(width: 12),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(user.email,
-                                style: Theme.of(context).textTheme.bodySmall),
+                            Text(user.email, style: Theme.of(context).textTheme.bodySmall),
                             const SizedBox(height: 4),
                             Text('Role: ${user.role}'),
                           ],
@@ -74,8 +69,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                       ),
                       IconButton(
                         tooltip: 'Change avatar',
-                        onPressed:
-                            state.isLoading ? null : _pickAndUploadAvatar,
+                        onPressed: state.isLoading ? null : _pickAndUploadAvatar,
                         icon: const Icon(Icons.image),
                       )
                     ],
@@ -94,8 +88,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
                   if (state.error != null) ...[
                     Text(
                       state.error!,
-                      style:
-                          TextStyle(color: Theme.of(context).colorScheme.error),
+                      style: TextStyle(color: Theme.of(context).colorScheme.error),
                     ),
                     const SizedBox(height: 8),
                   ],
@@ -127,15 +120,14 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
     if (!mounted) return;
     final err = ref.read(authControllerProvider).error;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(err ?? 'Saved')),
+      SnackBar(content: Text(err == null ? 'Saved' : err)),
     );
   }
 
   Future<void> _pickAndUploadAvatar() async {
     try {
       final picker = ImagePicker();
-      final file =
-          await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
+      final file = await picker.pickImage(source: ImageSource.gallery, imageQuality: 85);
       if (file == null) return;
 
       await ref.read(authControllerProvider.notifier).uploadAvatar(file.path);
@@ -143,7 +135,7 @@ class _ProfileScreenState extends ConsumerState<ProfileScreen> {
       if (!mounted) return;
       final err = ref.read(authControllerProvider).error;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(err ?? 'Avatar updated')),
+        SnackBar(content: Text(err == null ? 'Avatar updated' : err)),
       );
     } catch (e) {
       if (!mounted) return;

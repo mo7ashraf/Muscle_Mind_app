@@ -69,24 +69,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           passwordConfirmation: _password2.text,
           role: _role,
           phone: _phone.text.trim().isEmpty ? null : _phone.text.trim(),
-          specialization:
-              _role == 'trainer' && _specialization.text.trim().isNotEmpty
-                  ? _specialization.text.trim()
-                  : null,
-          experienceYears:
-              _role == 'trainer' ? _toInt(_experienceYears.text) : null,
-          certification:
-              _role == 'trainer' && _certification.text.trim().isNotEmpty
-                  ? _certification.text.trim()
-                  : null,
-          bio: _role == 'trainer' && _bio.text.trim().isNotEmpty
-              ? _bio.text.trim()
+
+          specialization: _role == 'trainer' && _specialization.text.trim().isNotEmpty
+              ? _specialization.text.trim()
               : null,
+          experienceYears: _role == 'trainer' ? _toInt(_experienceYears.text) : null,
+          certification: _role == 'trainer' && _certification.text.trim().isNotEmpty
+              ? _certification.text.trim()
+              : null,
+          bio: _role == 'trainer' && _bio.text.trim().isNotEmpty ? _bio.text.trim() : null,
+
           trainerId: _role == 'trainee' ? _toInt(_trainerId.text) : null,
-          currentWeight:
-              _role == 'trainee' ? _toDouble(_currentWeight.text) : null,
-          targetWeight:
-              _role == 'trainee' ? _toDouble(_targetWeight.text) : null,
+          currentWeight: _role == 'trainee' ? _toDouble(_currentWeight.text) : null,
+          targetWeight: _role == 'trainee' ? _toDouble(_targetWeight.text) : null,
           height: _role == 'trainee' ? _toDouble(_height.text) : null,
           age: _role == 'trainee' ? _toInt(_age.text) : null,
           gender: _role == 'trainee' ? _gender : null,
@@ -116,7 +111,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             child: Column(
               children: [
                 DropdownButtonFormField<String>(
-                  initialValue: _role,
+                  value: _role,
                   decoration: const InputDecoration(labelText: 'Role'),
                   items: const [
                     DropdownMenuItem(value: 'trainee', child: Text('Trainee')),
@@ -128,9 +123,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextFormField(
                   controller: _name,
                   decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (v) => (v == null || v.trim().isEmpty)
-                      ? 'Name is required'
-                      : null,
+                  validator: (v) =>
+                      (v == null || v.trim().isEmpty) ? 'Name is required' : null,
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -147,8 +141,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 const SizedBox(height: 12),
                 TextFormField(
                   controller: _phone,
-                  decoration:
-                      const InputDecoration(labelText: 'Phone (optional)'),
+                  decoration: const InputDecoration(labelText: 'Phone (optional)'),
                 ),
                 const SizedBox(height: 12),
                 TextFormField(
@@ -164,59 +157,53 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 TextFormField(
                   controller: _password2,
                   obscureText: true,
-                  decoration:
-                      const InputDecoration(labelText: 'Confirm Password'),
+                  decoration: const InputDecoration(labelText: 'Confirm Password'),
                   validator: (v) {
-                    if ((v ?? '') != _password.text)
-                      return 'Passwords do not match';
+                    if ((v ?? '') != _password.text) return 'Passwords do not match';
                     return null;
                   },
                 ),
                 const SizedBox(height: 18),
+
                 if (_role == 'trainer') ...[
                   const Divider(),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _specialization,
-                    decoration: const InputDecoration(
-                        labelText: 'Specialization (optional)'),
+                    decoration: const InputDecoration(labelText: 'Specialization (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _experienceYears,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Experience years (optional)'),
+                    decoration: const InputDecoration(labelText: 'Experience years (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _certification,
-                    decoration: const InputDecoration(
-                        labelText: 'Certification (optional)'),
+                    decoration: const InputDecoration(labelText: 'Certification (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _bio,
-                    decoration:
-                        const InputDecoration(labelText: 'Bio (optional)'),
+                    decoration: const InputDecoration(labelText: 'Bio (optional)'),
                     maxLines: 3,
                   ),
                   const SizedBox(height: 18),
                 ],
+
                 if (_role == 'trainee') ...[
                   const Divider(),
                   const SizedBox(height: 8),
                   TextFormField(
                     controller: _trainerId,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Trainer ID (optional)'),
+                    decoration: const InputDecoration(labelText: 'Trainer ID (optional)'),
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    initialValue: _gender,
-                    decoration:
-                        const InputDecoration(labelText: 'Gender (optional)'),
+                    value: _gender,
+                    decoration: const InputDecoration(labelText: 'Gender (optional)'),
                     items: const [
                       DropdownMenuItem(value: 'male', child: Text('Male')),
                       DropdownMenuItem(value: 'female', child: Text('Female')),
@@ -226,49 +213,42 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    initialValue: _goal,
+                    value: _goal,
                     decoration: const InputDecoration(labelText: 'Goal'),
                     items: const [
-                      DropdownMenuItem(
-                          value: 'weight_loss', child: Text('Weight loss')),
-                      DropdownMenuItem(
-                          value: 'muscle_gain', child: Text('Muscle gain')),
-                      DropdownMenuItem(
-                          value: 'maintenance', child: Text('Maintenance')),
+                      DropdownMenuItem(value: 'weight_loss', child: Text('Weight loss')),
+                      DropdownMenuItem(value: 'muscle_gain', child: Text('Muscle gain')),
+                      DropdownMenuItem(value: 'maintenance', child: Text('Maintenance')),
                     ],
-                    onChanged: (v) =>
-                        setState(() => _goal = v ?? 'maintenance'),
+                    onChanged: (v) => setState(() => _goal = v ?? 'maintenance'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _currentWeight,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Current weight (optional)'),
+                    decoration: const InputDecoration(labelText: 'Current weight (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _targetWeight,
                     keyboardType: TextInputType.number,
-                    decoration: const InputDecoration(
-                        labelText: 'Target weight (optional)'),
+                    decoration: const InputDecoration(labelText: 'Target weight (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _height,
                     keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Height (optional)'),
+                    decoration: const InputDecoration(labelText: 'Height (optional)'),
                   ),
                   const SizedBox(height: 12),
                   TextFormField(
                     controller: _age,
                     keyboardType: TextInputType.number,
-                    decoration:
-                        const InputDecoration(labelText: 'Age (optional)'),
+                    decoration: const InputDecoration(labelText: 'Age (optional)'),
                   ),
                   const SizedBox(height: 18),
                 ],
+
                 if (state.error != null) ...[
                   Container(
                     width: double.infinity,
@@ -281,6 +261,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   const SizedBox(height: 12),
                 ],
+
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
